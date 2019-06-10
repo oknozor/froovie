@@ -1,6 +1,8 @@
 table! {
     users (id) {
         id -> Int4,
-        nick -> Varchar,
+        nick -> Text,
+        email -> Text,
+        password_hash -> Text,
     }
 }

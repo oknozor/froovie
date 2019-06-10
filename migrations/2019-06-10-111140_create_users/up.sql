@@ -1,0 +1,5 @@
+CREATE TABLE users
+(
+    id   SERIAL PRIMARY KEY,
+    nick VARCHAR NOT NULL
+)
