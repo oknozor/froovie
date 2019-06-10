@@ -39,4 +39,11 @@ echo "TMDB_API_KEY={my-api-key}" >> .env
 cargo run
 ```
 
+## TODO
+
+- find an elegant way to unit test controllers (mockito rust ?)
+- add tooling (CI, rustfmt, clippy...etc, gerkhin)
+- maybe split model into a dedicated library
+- do some research on testing with diesel (test migration, h2 integration)
+- frontend ! 
 
