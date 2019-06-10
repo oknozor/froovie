@@ -9,6 +9,8 @@ use std::env;
 
 mod schema;
 pub mod users;
+pub mod user_selections;
+pub mod movies;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -17,12 +19,4 @@ pub fn establish_connection() -> PgConnection {
         .expect("DATABASE_URL must be set");
     PgConnection::establish(&database_url)
         .expect(&format!("Error connecting to {}", database_url))
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn test() {
-        assert_eq!(2 + 2, 4);
-    }
 }

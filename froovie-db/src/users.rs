@@ -4,7 +4,7 @@ use diesel::prelude::*;
 use super::schema::users;
 use crate::*;
 
-#[derive(Queryable, Clone)]
+#[derive(Identifiable, Queryable, PartialEq, Debug)]
 pub struct User {
     pub id: i32, 
     pub nick: String,
@@ -27,7 +27,8 @@ impl ToString for User {
     }
 }
 
-pub fn by_id(user_id: i32) -> User {
+//TODO: refactor this to Option<User>
+pub fn find_by_id(user_id: i32) -> User {
 
     let connection = establish_connection();
     users
@@ -44,7 +45,7 @@ pub fn all() -> Vec<User> {
         .expect("Error loading users")
 }
 
-pub fn new<'a>(new_user: &NewUser) -> User {
+pub fn insert<'a>(new_user: &NewUser) -> User {
     let connection = establish_connection();
 
     diesel::insert_into(users::table)

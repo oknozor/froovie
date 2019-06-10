@@ -19,21 +19,19 @@ lazy_static! {
     };
 }
 
-//TODO
-pub fn search() -> Movie {
+pub fn search(search_query: &str) -> SearchResult {
+    let tmdb = TMDb { api_key: HASMAP.get(&0).unwrap(), language: "fr" };
+    tmdb.search()
+        .title(search_query)
+        .execute()
+        .unwrap()
+}
 
+pub fn by_id(movie_id: u64) -> Movie {
     let tmdb = TMDb { api_key: HASMAP.get(&0).unwrap(), language: "fr" };
 
-    let search_result = tmdb.search()
-        .title("Interstellar")
-        .year(2014)
-        .execute()
-        .unwrap();
-
-    let id = search_result.results[0].id;
-
     tmdb.fetch()
-        .id(id)
+        .id(movie_id)
         .execute()
         .unwrap()
 }
