@@ -1,8 +1,9 @@
-use serde::{Serialize, Deserialize};
-use froovie_db::users::{User, NewUser};
-use bcrypt::{hash, DEFAULT_COST};
+
 use super::FromModel;
 use super::ToModel;
+use bcrypt::{hash, DEFAULT_COST};
+use froovie_db::users::{NewUser, User};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UserDto {
@@ -18,7 +19,6 @@ pub struct NewUserDto {
     pub password: String,
 }
 
-
 impl FromModel<User> for UserDto {
     fn from_model(user: User) -> Self {
         UserDto {
@@ -29,14 +29,13 @@ impl FromModel<User> for UserDto {
     }
 }
 
-impl <'a> ToModel<'a, NewUser<'a>> for NewUserDto {
+impl<'a> ToModel<'a, NewUser<'a>> for NewUserDto {
     fn to_model(&'a self) -> NewUser<'a> {
-        let password_hash = hash(self.password.as_str(), DEFAULT_COST)
-            .expect("crypto error");
+        let password_hash = hash(self.password.as_str(), DEFAULT_COST).expect("crypto error");
         NewUser {
             nick: self.nick.as_str(),
             email: self.email.as_str(),
-            password_hash
+            password_hash,
         }
     }
 }
