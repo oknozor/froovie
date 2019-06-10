@@ -20,7 +20,6 @@ echo DATABASE_URL=postgres://froovie:password@localhost/froovie > .env
 
 3. Run the diesel migrations :
 ```sh
-cd froovie-db && 
 diesel migration run 
 ```
 
@@ -41,6 +40,7 @@ cargo run
 
 ## TODO
 
+- add [jwt auth](https://www.crates.io/crates/nickel-jwt-session)
 - find an elegant way to unit test controllers (mockito rust ?)
 - add tooling (CI, rustfmt, clippy...etc, gerkhin)
 - maybe split model into a dedicated library
