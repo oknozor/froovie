@@ -36,7 +36,7 @@ impl <'a> ToModel<'a, NewUser<'a>> for NewUserDto {
             .expect("crypto erro");
         NewUser {
             nick: self.nick.as_str(),
-            email: selfword .email.as_str(),
+            email: self.email.as_str(),
             password_hash
         }
     }
