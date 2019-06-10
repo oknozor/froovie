@@ -21,6 +21,8 @@ lazy_static! {
 
 pub fn search(search_query: &str) -> SearchResult {
     let tmdb = TMDb { api_key: HASMAP.get(&0).unwrap(), language: "fr" };
+    info!("Fetching tmbd search query :\"{}\"",search_query );
+
     tmdb.search()
         .title(search_query)
         .execute()
@@ -29,6 +31,9 @@ pub fn search(search_query: &str) -> SearchResult {
 
 pub fn by_id(movie_id: u64) -> Movie {
     let tmdb = TMDb { api_key: HASMAP.get(&0).unwrap(), language: "fr" };
+
+    info!("Fetching tmbd movie with id :\"{}\"",movie_id );
+
 
     tmdb.fetch()
         .id(movie_id)

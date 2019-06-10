@@ -1,9 +1,7 @@
 use crate::establish_connection;
-use crate::schema::users::dsl::*;
 use crate::schema::user_selections::dsl::*;
 use diesel::prelude::*;
 use super::schema::user_selections;
-use super::schema::users;
 use super::users::User;
 
 #[derive(Identifiable, Queryable, Associations, PartialEq)]

@@ -34,7 +34,7 @@ pub fn insert(movie: NewMovie) -> Movie {
 pub fn find_by_id(movie_id: i32) -> Result<Movie, Error> {
     let connection = establish_connection();
     movies
-        .find(id)
+        .find(movie_id)
         .get_result::<Movie>(&connection)
 }
 
