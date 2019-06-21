@@ -9,7 +9,8 @@ CREATE TABLE movies
     id         SERIAL PRIMARY KEY,
     moviedb_id INTEGER NOT NULL ,
     title      TEXT NOT NULL ,
-    description TEXT
+    description TEXT,
+    image_url   TEXT
 );
 
 

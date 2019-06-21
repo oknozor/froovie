@@ -11,6 +11,7 @@ pub struct MovieDto {
     pub moviedb_id: i32,
     pub title: String,
     pub description: Option<String>,
+    pub image_url: Option<String>,
 }
 
 
@@ -25,7 +26,8 @@ impl FromModel<Movie> for MovieDto {
             id: movie.id,
             moviedb_id: movie.moviedb_id,
             title: movie.title.clone(),
-            description: movie.description
+            description: movie.description,
+            image_url: movie.image_url
         }
     }
 }
@@ -37,7 +39,8 @@ impl <'a> ToModel<'a, NewMovie> for NewMovieDto {
         NewMovie {
             moviedb_id: tmdb_movie.id as i32,
             title: tmdb_movie.title.clone(),
-            description: tmdb_movie.overview.clone()
+            description: tmdb_movie.overview.clone(),
+            image_url: tmdb_movie.backdrop_path,
         }
 
     }

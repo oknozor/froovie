@@ -11,7 +11,8 @@ pub struct Movie {
     pub id: i32,
     pub moviedb_id: i32,
     pub title: String,
-    pub description: Option<String>
+    pub description: Option<String>,
+    pub image_url: Option<String>
 }
 
 #[derive(Insertable)]
@@ -19,7 +20,8 @@ pub struct Movie {
 pub struct NewMovie{
     pub moviedb_id: i32,
     pub title: String,
-    pub description: Option<String>
+    pub description: Option<String>,
+    pub image_url: Option<String>
 }
 
 

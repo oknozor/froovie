@@ -4,17 +4,14 @@ extern crate serde_json;
 use froovie_db::user_selections;
 use froovie_db::users;
 
-use nickel::{
-    HttpRouter, JsonBody, Nickel, Router,
-};
-
+use nickel::{HttpRouter, JsonBody, Nickel, Router};
 
 use crate::dtos::user_selections::NewUserSelectionDto;
 use crate::dtos::user_selections::UserSelectionDto;
 use crate::dtos::users::NewUserDto;
 use crate::dtos::users::UserDto;
-use crate::dtos::ToModel;
 use crate::dtos::FromModel;
+use crate::dtos::ToModel;
 
 use crate::nickel::status::StatusCode;
 use crate::services::tmdb_fetcher;
@@ -41,25 +38,22 @@ pub fn get_router() -> Router {
 
     router.get("/users/:id/selections", middleware! { |request|
         let user_id: i32 = request.param("id").expect("invalid user id").parse::<i32>().unwrap();
-        let user_selection_dtos: Vec<UserSelectionDto> = user_selections::by_user_id(user_id)
-        .into_iter()
-        .map(UserSelectionDto::from_model)
-        .collect();
-
-        serde_json::to_string(&user_selection_dtos).unwrap()
+        let user_selections = UserSelectionDto::from_model(user_id);
+        serde_json::to_string(&user_selections).unwrap()
 
     });
 
     router.post(
         "/users/selections",
         middleware! { |request, response|
+            info!("inserting user selection");
             let selection_dto = try_with!(response, {
                 request.json_as::<NewUserSelectionDto>().map_err(|e| (StatusCode::BadRequest, e))
             });
 
             let id = user_selections::insert(selection_dto.to_model());
-            let db_selection = user_selections::find_by_id(id);
-            serde_json::to_string(&UserSelectionDto::from_model(db_selection)).unwrap()
+            let user_selections = UserSelectionDto::from_model(selection_dto.user_id);
+            serde_json::to_string(&user_selections).unwrap()
         },
     );
 

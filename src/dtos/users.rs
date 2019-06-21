@@ -39,3 +39,4 @@ impl<'a> ToModel<'a, NewUser<'a>> for NewUserDto {
         }
     }
 }
+

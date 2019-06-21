@@ -1,5 +1,5 @@
+extern crate reqwest;
 extern crate tmdb;
-
 
 use dotenv::dotenv;
 
@@ -38,4 +38,12 @@ pub fn by_id(movie_id: u64) -> Movie {
     info!("Fetching tmbd movie with id :\"{}\"", movie_id);
 
     tmdb.fetch().id(movie_id).execute().unwrap()
+}
+
+pub fn get_image(movie_id: u64) -> String {
+    format!(
+        "https://api.themoviedb.org/3/movie/{}/images?api_key={}&language=en-US",
+        movie_id,
+        HASMAP.get(&0).unwrap()
+    )
 }
