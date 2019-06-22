@@ -1,6 +1,7 @@
 extern crate reqwest;
 extern crate tmdb;
 
+use reqwest::Error;
 use dotenv::dotenv;
 
 use std::collections::HashMap;
@@ -19,14 +20,14 @@ lazy_static! {
     };
 }
 
-pub fn search(search_query: &str) -> SearchResult {
+pub fn search(search_query: &str) -> Result<SearchResult, Error> {
     let tmdb = TMDb {
         api_key: HASMAP.get(&0).unwrap(),
         language: "fr",
     };
     info!("Fetching tmbd search query :\"{}\"", search_query);
 
-    tmdb.search().title(search_query).execute().unwrap()
+    tmdb.search().title(search_query).execute()
 }
 
 pub fn by_id(movie_id: u64) -> Movie {

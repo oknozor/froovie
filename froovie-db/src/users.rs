@@ -4,8 +4,6 @@ use diesel::prelude::*;
 use super::schema::users;
 use crate::*;
 
-use std::hash::{Hash, Hasher};
-
 #[derive(Identifiable, Queryable, PartialEq, Debug)]
 pub struct User {
     pub id: i32, 
@@ -22,17 +20,9 @@ pub struct NewUser<'a> {
     pub password_hash: String,
 }
 
-
 impl ToString for User {
     fn to_string(&self) -> String {
         format!("id : {} , nick : {} ", self.id, self.nick) 
-    }
-}
-
-impl Hash for User {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        self.email.hash(state);
-        self.password_hash.hash(state)
     }
 }
 
@@ -42,7 +32,7 @@ pub fn find_by_id(user_id: i32) -> User {
     users
         .find(user_id)
         .get_result::<User>(&connection)
-        .expect(&format!("User with id {} not found", user_id))
+        .unwrap_or_else(|_| panic!("User with id {} not found", user_id))
 }
 
 pub fn all() -> Vec<User> {
@@ -53,7 +43,7 @@ pub fn all() -> Vec<User> {
         .expect("Error loading users")
 }
 
-pub fn insert<'a>(new_user: &NewUser) -> User {
+pub fn insert(new_user: &NewUser) -> User {
     let connection = establish_connection();
 
     diesel::insert_into(users::table)

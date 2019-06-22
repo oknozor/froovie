@@ -2,6 +2,7 @@
 use super::FromModel;
 use super::ToModel;
 use bcrypt::{hash, DEFAULT_COST};
+use froovie_db::users;
 use froovie_db::users::{NewUser, User};
 use serde::{Deserialize, Serialize};
 
@@ -20,7 +21,8 @@ pub struct NewUserDto {
 }
 
 impl FromModel<User> for UserDto {
-    fn from_model(user: User) -> Self {
+    fn from_model(user_id: i32) -> Self {
+        let user = users::find_by_id(user_id); 
         UserDto {
             id: Some(user.id),
             nick: user.nick,

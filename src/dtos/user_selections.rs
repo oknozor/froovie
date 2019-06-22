@@ -1,4 +1,5 @@
 
+use froovie_db::movies::Movie;
 use super::movies::MovieDto;
 use super::users::UserDto;
 use super::FromModel;
@@ -7,8 +8,9 @@ use crate::services::tmdb_fetcher;
 use froovie_db::movies;
 use froovie_db::movies::NewMovie;
 use froovie_db::user_selections;
-use froovie_db::user_selections::{NewUserSelection, UserSelection};
+use froovie_db::user_selections::{NewUserSelection};
 use serde::{Deserialize, Serialize};
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UserSelectionDto {
     pub user: UserDto,
@@ -21,17 +23,13 @@ pub struct NewUserSelectionDto {
     pub moviedb_id: i32,
 }
 
-impl UserSelectionDto {
-    pub fn from_model(user_id: i32) -> Self {
-        let user = UserDto::from_model(froovie_db::users::find_by_id(user_id));
+impl FromModel<Movie> for UserSelectionDto {
+    fn from_model(user_id: i32) -> Self {
+        let user = UserDto::from_model(user_id);
         let selections = user_selections::by_user_id(user_id);
 
         let movies = selections.iter()
             .map(|selection| selection.movie_id)
-            .map(|id| {
-                info!("movie id : {}", id.clone());
-                movies::find_by_id(id).unwrap()
-            })
             .map(MovieDto::from_model)
             .collect();
 
